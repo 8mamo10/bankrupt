@@ -10,6 +10,7 @@ $ docker exec -it postgres12 psql -U root
 
 ```
 $ brew install golang-migrate
+$ brew install sqlc
 ```
 
 ```
