@@ -23,4 +23,6 @@ $ make migratedown
 
 ```
 $ go get github.com/lib/pq
+$ go get github.com/stretchr/testify
+$ go mod tidy
 ```
