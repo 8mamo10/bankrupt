@@ -20,3 +20,7 @@ $ make dropdb
 $ make migrateup
 $ make migratedown
 ```
+
+```
+$ go get github.com/lib/pq
+```
