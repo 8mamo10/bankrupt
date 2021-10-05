@@ -77,7 +77,7 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 			return err
 		}
 		// move money out of account1
-		account1, err := q.GetAccount(ctx, arg.FromAccountID)
+		account1, err := q.GetAccountForUpdate(ctx, arg.FromAccountID)
 		if err != nil {
 			return err
 		}
@@ -89,7 +89,7 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 			return err
 		}
 		// move money into account2
-		account2, err := q.GetAccount(ctx, arg.ToAccountID)
+		account2, err := q.GetAccountForUpdate(ctx, arg.ToAccountID)
 		if err != nil {
 			return err
 		}
