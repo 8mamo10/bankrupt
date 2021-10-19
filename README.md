@@ -26,4 +26,5 @@ $ go get github.com/lib/pq
 $ go get github.com/stretchr/testify
 $ go mod tidy
 $ go get -u github.com/gin-gonic/gin
+$ go get github.com/spf13/viper
 ```
