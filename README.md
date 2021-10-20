@@ -27,4 +27,5 @@ $ go get github.com/stretchr/testify
 $ go mod tidy
 $ go get -u github.com/gin-gonic/gin
 $ go get github.com/spf13/viper
+$ go install github.com/golang/mock/mockgen@v1.6.0
 ```
