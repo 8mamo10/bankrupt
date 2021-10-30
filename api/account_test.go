@@ -107,6 +107,36 @@ func TestCreateAccountAPI(t *testing.T) {
 }
 
 func TestListAccountsAPI(t *testing.T) {
+	// Test NotFound case before creating accounts
+
+	t.Run("NotFound", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		store := mockdb.NewMockStore(ctrl)
+		store.EXPECT().
+			ListAccounts(gomock.Any(), gomock.Any()).
+			Times(1).
+			Return([]db.Account{}, sql.ErrNoRows)
+
+		server := NewServer(store)
+		recorder := httptest.NewRecorder()
+
+		url := "/accounts"
+		request, err := http.NewRequest(http.MethodGet, url, nil)
+		require.NoError(t, err)
+
+		// Add query parameters to request URL
+		q := request.URL.Query()
+		q.Add("page_id", fmt.Sprintf("%d", 1))
+		q.Add("page_size", fmt.Sprintf("%d", 5))
+		request.URL.RawQuery = q.Encode()
+
+		server.router.ServeHTTP(recorder, request)
+		require.Equal(t, http.StatusNotFound, recorder.Code)
+	})
+	//
+
 	n := 5
 	accounts := make([]db.Account, n)
 	for i := 0; i < n; i++ {
@@ -220,7 +250,6 @@ func TestListAccountsAPI(t *testing.T) {
 			tc.checkResponse(recorder)
 		})
 	}
-
 }
 
 func randomAccount() db.Account {
