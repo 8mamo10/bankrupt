@@ -35,6 +35,7 @@ $ go get -u github.com/gin-gonic/gin
 $ go get github.com/spf13/viper
 $ go install github.com/golang/mock/mockgen@v1.6.0
 $ go get github.com/google/uuid
+$ go get github.com/dgrijalva/jwt-go
 ```
 
 # vscode

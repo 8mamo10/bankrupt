@@ -3,6 +3,7 @@ module github.com/8mamo10/bankrupt
 go 1.12
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.9.0
 	github.com/golang/mock v1.6.0
