@@ -1,6 +1,6 @@
 module github.com/8mamo10/bankrupt
 
-go 1.12
+go 1.16
 
 require (
 	github.com/aead/chacha20poly1305 v0.0.0-20170617001512-233f39982aeb
