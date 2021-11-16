@@ -8,6 +8,7 @@ $ docker run --name postgres12 -p5432:5432 -e POSTGRES_USER=root -e POSTGRES_PAS
 $ docker exec -it postgres12 psql -U root
 $ docker build -t bankrupt:latest .
 $ docker images
+$ docker rmi [IMAGE ID]
 ```
 
 ## mac
