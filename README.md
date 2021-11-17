@@ -9,6 +9,11 @@ $ docker exec -it postgres12 psql -U root
 $ docker build -t bankrupt:latest .
 $ docker images
 $ docker rmi [IMAGE ID]
+$ docker run --name bankrupt -p 8888:8888 bankrupt:latest
+$ docker run --name bankrupt -p 8888:8888 -e GIN_MODE=release bankrupt:latest
+$ docker rm bankrupt
+$ docker container inspect postgres12
+$ docker container inspect bankrupt
 ```
 
 ## mac
