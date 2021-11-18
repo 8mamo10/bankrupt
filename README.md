@@ -18,7 +18,7 @@ $ docker network ls
 $ docker network inspect bridge
 $ docker network create bank-network
 $ docker network connect bank-network postgres12
-docker run --name bankrupt --network bank-network -p 8888:8888 -e GIN_MODE=release -e DB_SOURCE="postgresql://root:secret@postgres12:5432/simple_bank?sslmode=disable" bankrupt:latest
+$ docker run --name bankrupt --network bank-network -p 8888:8888 -e GIN_MODE=release -e DB_SOURCE="postgresql://root:secret@postgres12:5432/simple_bank?sslmode=disable" bankrupt:latest
 ```
 
 ## mac
