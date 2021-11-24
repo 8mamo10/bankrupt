@@ -58,3 +58,9 @@ $ go get github.com/o1egl/paseto
 ```
 "go.testFlags": ["-v"],
 ```
+
+# misc
+
+```
+$ openssl rand -hex 64 | head -c 32
+```
