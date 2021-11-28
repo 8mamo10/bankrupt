@@ -53,6 +53,19 @@ $ go get github.com/dgrijalva/jwt-go
 $ go get github.com/o1egl/paseto
 ```
 
+# aws
+
+```
+$ aws configure
+$ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text
+$ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq 'to_entries'
+$ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq 'to_entries|map(.key)'
+$ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq 'to_entries|map(.value)'
+$ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq 'to_entries|map("\(.key)=\(.value)")'
+$ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq 'to_entries|map("\(.key)=\(.value)")|.[]'
+$ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]'
+```
+
 # vscode
 
 ```
