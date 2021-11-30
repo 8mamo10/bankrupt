@@ -64,6 +64,7 @@ $ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci -
 $ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq 'to_entries|map("\(.key)=\(.value)")'
 $ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq 'to_entries|map("\(.key)=\(.value)")|.[]'
 $ aws secretsmanager get-secret-value --secret-id bankrupt --profile github-ci --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]'
+$ aws ecr get-login-password --profile github-ci | docker login --username AWS --password-stdin [arn]
 ```
 
 # vscode
