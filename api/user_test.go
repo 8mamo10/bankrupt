@@ -222,6 +222,22 @@ func TestLoginUserAPI(t *testing.T) {
 				require.Equal(t, http.StatusOK, recorder.Code)
 			},
 		},
+		{
+			name: "UserNotFound",
+			body: gin.H{
+				"username": user.Username,
+				"password": password,
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().
+					GetUser(gomock.Any(), gomock.Any()).
+					Times(1).
+					Return(db.User{}, sql.ErrNoRows)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusNotFound, recorder.Code)
+			},
+		},
 	}
 
 	for i := range testCases {
