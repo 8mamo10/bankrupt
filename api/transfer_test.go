@@ -10,6 +10,7 @@ import (
 
 	mockdb "github.com/8mamo10/bankrupt/db/mock"
 	db "github.com/8mamo10/bankrupt/db/sqlc"
+	"github.com/8mamo10/bankrupt/token"
 	"github.com/8mamo10/bankrupt/util"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
@@ -27,6 +28,13 @@ func TestCreateTransferAPI(t *testing.T) {
 	account1.Currency = util.USD
 	account2.Currency = util.USD
 
+	testCases := []struct {
+		name          string
+		body          gin.H
+		setupAuth     func(t *testing.T, request *http.Request, tokenMaker token.Maker)
+		buildStubs    func(store *mockdb.MockStore)
+		checkResponse func(recoder *httptest.ResponseRecorder)
+	}{}
 	t.Run("OK", func(t *testing.T) {
 		// ctrl
 		ctrl := gomock.NewController(t)
