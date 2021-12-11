@@ -47,30 +47,25 @@ func TestCreateTransferAPI(t *testing.T) {
 				addAutohrization(t, request, tokenMaker, authorizationTypeBearer, account1.Owner, time.Minute)
 			},
 			buildStubs: func(store *mockdb.MockStore) {
-				store.EXPECT().
-					GetAccount(gomock.Any(), gomock.Eq(account1.ID)).
-					Times(1).
-					Return(account1, nil)
-				store.EXPECT().
-					GetAccount(gomock.Any(), gomock.Eq(account2.ID)).
-					Times(1).
-					Return(account2, nil)
+				store.EXPECT().GetAccount(gomock.Any(), gomock.Eq(account1.ID)).Times(1).Return(account1, nil)
+				store.EXPECT().GetAccount(gomock.Any(), gomock.Eq(account2.ID)).Times(1).Return(account2, nil)
+
 				arg := db.TransferTxParams{
 					FromAccountID: account1.ID,
 					ToAccountID:   account2.ID,
 					Amount:        amount,
 				}
-				store.EXPECT().
-					TransferTx(gomock.Any(), gomock.Eq(arg)).
-					Times(1)
+				store.EXPECT().TransferTx(gomock.Any(), gomock.Eq(arg)).Times(1)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusOK, recorder.Code)
 			},
 		},
 	}
+
 	for i := range testCases {
 		tc := testCases[i]
+
 		t.Run(tc.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
@@ -93,50 +88,4 @@ func TestCreateTransferAPI(t *testing.T) {
 			tc.checkResponse(recorder)
 		})
 	}
-	/*
-		t.Run("OK", func(t *testing.T) {
-			// ctrl
-			ctrl := gomock.NewController(t)
-			defer ctrl.Finish()
-			// stub
-			store := mockdb.NewMockStore(ctrl)
-			store.EXPECT().
-				GetAccount(gomock.Any(), gomock.Eq(account1.ID)).
-				Times(1).
-				Return(account1, nil)
-			store.EXPECT().
-				GetAccount(gomock.Any(), gomock.Eq(account2.ID)).
-				Times(1).
-				Return(account2, nil)
-			arg := db.TransferTxParams{
-				FromAccountID: account1.ID,
-				ToAccountID:   account2.ID,
-				Amount:        amount,
-			}
-			store.EXPECT().
-				TransferTx(gomock.Any(), gomock.Eq(arg)).
-				Times(1)
-				// server
-			server := newTestServer(t, store)
-			recorder := httptest.NewRecorder()
-			// request body
-			body := gin.H{
-				"from_account_id": account1.ID,
-				"to_account_id":   account2.ID,
-				"amount":          amount,
-				"currency":        util.USD,
-			}
-			data, err := json.Marshal(body)
-			require.NoError(t, err)
-			// http request
-			url := "/transfers"
-			request, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(data))
-			require.NoError(t, err)
-			// auth
-			addAutohrization(t, request, server.tokenMaker, authorizationTypeBearer, account1.Owner, time.Minute)
-			// response
-			server.router.ServeHTTP(recorder, request)
-			require.Equal(t, http.StatusOK, recorder.Code)
-		})
-	*/
 }
