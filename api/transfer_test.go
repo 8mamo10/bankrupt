@@ -23,11 +23,14 @@ func TestCreateTransferAPI(t *testing.T) {
 
 	user1, _ := randomUser(t)
 	user2, _ := randomUser(t)
+	user3, _ := randomUser(t)
 	account1 := randomAccount(user1.Username)
 	account2 := randomAccount(user2.Username)
+	account3 := randomAccount(user3.Username)
 
 	account1.Currency = util.USD
 	account2.Currency = util.USD
+	account3.Currency = util.EUR
 
 	testCases := []struct {
 		name          string
@@ -138,6 +141,26 @@ func TestCreateTransferAPI(t *testing.T) {
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusNotFound, recorder.Code)
+			},
+		},
+		{
+			name: "ToAccountCurrencyMismatch",
+			body: gin.H{
+				"from_account_id": account1.ID,
+				"to_account_id":   account3.ID,
+				"amount":          amount,
+				"currency":        util.USD,
+			},
+			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
+				addAutohrization(t, request, tokenMaker, authorizationTypeBearer, account1.Owner, time.Minute)
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().GetAccount(gomock.Any(), gomock.Eq(account1.ID)).Times(1).Return(account1, nil)
+				store.EXPECT().GetAccount(gomock.Any(), gomock.Eq(account3.ID)).Times(1).Return(account3, nil)
+				store.EXPECT().TransferTx(gomock.Any(), gomock.Any()).Times(0)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusBadRequest, recorder.Code)
 			},
 		},
 	}
